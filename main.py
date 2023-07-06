@@ -334,15 +334,19 @@ async def start() -> None:
     bot.openxbl_session = aiohttp_retry.RetryClient(
         headers=headers, response_class=BetterResponse
     )
-    bot.session = aiohttp.ClientSession(json_serialize=_orjson_dumps_wrapper)
+bot_token = os.environ.get("BOT_TOKEN")
+print("Bot Token:", bot_token)
 
-    ext_list = utils.get_all_extensions(os.environ["DIRECTORY_OF_BOT"])
-    for ext in ext_list:
-        # skip loading voting ext if token doesn't exist
-        if "voting" in ext and not (
-            os.environ.get("TOP_GG_TOKEN") or os.environ.get("DBL_TOKEN")
-        ):
-            continue
+bot.session = aiohttp.ClientSession(json_serialize=_orjson_dumps_wrapper)
+
+ext_list = utils.get_all_extensions(os.environ["DIRECTORY_OF_BOT"])
+for ext in ext_list:
+
+    if "voting" in ext and not (
+        os.environ.get("TOP_GG_TOKEN") or os.environ.get("DBL_TOKEN")
+    ):
+        continue:
+        continue
 
         if utils.TEST_MODE and ("autorun" in ext or "etc" in ext):
             continue
